@@ -4,6 +4,8 @@ import toml
 import common
 import actions
 
+from common import Commit
+
 STDIN_FILENO = 1
 
 
@@ -14,7 +16,8 @@ def read_config():
 
 ACTIONS = {"directory_prefix": actions.directory_prefix,
            "force_present": actions.force_present,
-           "force_title": actions.force_title}
+           "force_title": actions.force_title,
+           "no_cr": actions.no_cr}
 
 
 def main():
@@ -30,8 +33,8 @@ def main():
     if "-m" in cmdline:
         with open(msg_path, 'r+') as msg_file_obj:
             for action in ACTIONS:
-                if config[action]:
-                    msg = ACTIONS[action](msg, msg_file_obj)
+                if action in config.keys():
+                    msg = ACTIONS[action](Commit(msg, msg_file_obj, config))
 
 
 if __name__ == '__main__':

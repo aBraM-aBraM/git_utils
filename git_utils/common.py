@@ -1,11 +1,19 @@
 from pathlib import Path
 from subprocess import Popen, PIPE
+from dataclasses import dataclass
 import sys
 from typing import TextIO
 
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_DIR = SCRIPT_DIR.parent
 CONFIG_PATH = SCRIPT_DIR / "git_utils.toml"
+
+
+@dataclass
+class Commit:
+    msg: str
+    msg_file_obj: TextIO
+    config: dict
 
 
 def unwrap(statement: bool, error_msg: str):

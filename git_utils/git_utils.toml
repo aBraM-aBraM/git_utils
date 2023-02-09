@@ -1,3 +1,5 @@
 force-present=true
 force-title=true
 directory-prefix=true
+no-cr=true
+auto-common-directory=true
