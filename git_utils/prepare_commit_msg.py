@@ -24,7 +24,7 @@ def read_config():
 
 
 def force_present(msg: str):
-    unwrap(msg.split()[0][-2:] != "ed", f"Use present tense in commits! ({msg.split()[0]} is past tense)")
+    unwrap(msg.split()[0][-2:] != "ed", f"Use present tense in commits! (\"{msg.split()[0]}\" is in past tense)")
 
 
 def directory_prefix(msg: str):
