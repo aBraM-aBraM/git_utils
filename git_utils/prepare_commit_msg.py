@@ -14,8 +14,8 @@ def read_config():
         return dict((k.replace('-', '_'), v) for k, v in toml.load(config_file_obj).items())
 
 
-ACTIONS = {"directory_prefix": actions.directory_prefix,
-           "force_present": actions.force_present,
+ACTIONS = {"force_present": actions.force_present,
+           "directory_prefix": actions.directory_prefix,
            "force_title": actions.force_title,
            "no_cr": actions.no_cr}
 
@@ -32,9 +32,11 @@ def main():
 
     if "-m" in cmdline:
         with open(msg_path, 'r+') as msg_file_obj:
+            commit = Commit(msg, config)
             for action in ACTIONS:
                 if action in config.keys():
-                    msg = ACTIONS[action](Commit(msg, msg_file_obj, config))
+                    commit = ACTIONS[action](commit)
+            common.set_msg(commit.msg, msg_file_obj)
 
 
 if __name__ == '__main__':

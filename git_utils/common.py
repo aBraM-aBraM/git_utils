@@ -2,7 +2,7 @@ from pathlib import Path
 from subprocess import Popen, PIPE
 from dataclasses import dataclass
 import sys
-from typing import TextIO
+from typing import TextIO, Callable, Any, Collection
 
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_DIR = SCRIPT_DIR.parent
@@ -12,7 +12,6 @@ CONFIG_PATH = SCRIPT_DIR / "git_utils.toml"
 @dataclass
 class Commit:
     msg: str
-    msg_file_obj: TextIO
     config: dict
 
 
@@ -26,12 +25,16 @@ def panic(error_msg: str):
     exit(1)
 
 
+def most(it: Collection, predicate: Callable[[Any], bool]):
+    return len(list(filter(predicate, it))) >= len(it)
+
+
 def get_status():
     stdout, _ = Popen("git status -s", shell=True, cwd=PROJECT_DIR, stdout=PIPE).communicate()
     stdout = set(stdout.decode().splitlines())
 
-    staged = set(line[1:] for line in stdout if "??" not in line)
-    untracked = set(line[1:] for line in stdout.difference(staged))
+    staged = set(line[1:].strip() for line in stdout if "??" not in line)
+    untracked = set(line[1:].strip() for line in stdout.difference(staged))
 
     return staged, untracked
 

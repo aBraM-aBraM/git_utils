@@ -31,4 +31,3 @@ chmod +x ./git_utils/setup_env.sh
 
 Configure [git_utils.toml](./git_utils/git_utils.toml) based on your
 needs and morals.
-

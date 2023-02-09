@@ -3,3 +3,4 @@ force-title=true # commits must fit the syntax <commit title>:<commit msg>
 directory-prefix=true # if all commits are in the same directory use it as title, add yesno if not all are in the same directory
 no-cr=true # no "cr" in commit messages
 auto-common-directory=true # always use common directory in if directory-prefix is true
+top-level-title="general" # name to use with directory-prefix for the top-level dir (project name / general)
