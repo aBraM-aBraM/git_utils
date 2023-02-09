@@ -1,0 +1,5 @@
+#!/usr/bin/sh
+
+PROJECT_DIR=$(dirname "$(dirname "$( cd -- "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )")")
+CMDLINE=$(ps -p $PPID -o args);
+python3 "$PROJECT_DIR"/git_utils/prepare_commit_msg.py "$1" "$CMDLINE"
