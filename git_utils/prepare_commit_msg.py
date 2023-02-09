@@ -2,20 +2,14 @@ import os
 import sys
 import toml
 from pathlib import Path
+from subprocess import Popen, PIPE
 
-SCRIPT_PATH = Path(__file__).parent
-CONFIG_PATH = SCRIPT_PATH / "git_utils.toml"
+import actions
+
+SCRIPT_DIR = Path(__file__).parent
+PROJECT_DIR = SCRIPT_DIR.parent
+CONFIG_PATH = SCRIPT_DIR / "git_utils.toml"
 STDIN_FILENO = 1
-
-
-def unwrap(statement: bool, error_msg: str):
-    if not statement:
-        panic(error_msg)
-
-
-def panic(error_msg: str):
-    print(error_msg, file=sys.stderr)
-    exit(1)
 
 
 def read_config():
@@ -23,25 +17,19 @@ def read_config():
         return dict((k.replace('-', '_'), v) for k, v in toml.load(config_file_obj).items())
 
 
-def force_present(msg: str):
-    unwrap(msg.split()[0][-2:] != "ed", f"Use present tense in commits! (\"{msg.split()[0]}\" is in past tense)")
-
-
-def directory_prefix(msg: str):
-    pass
-
-
-def force_title(msg: str):
-    unwrap(":" in msg, "Commits must have a title! Syntax: <commit title>: <commit msg>")
-
-
 def get_status():
-    pass
+    stdout, _ = Popen("git status -s", shell=True, cwd=PROJECT_DIR, stdout=PIPE).communicate()
+    stdout = set(stdout.decode().splitlines())
+
+    staged = set(line[1:] for line in stdout if "??" not in line)
+    untracked = set(line[1:] for line in stdout.difference(staged))
+
+    return staged, untracked
 
 
-ACTIONS = {"directory_prefix": directory_prefix,
-           "force_present": force_present,
-           "force_title": force_title}
+ACTIONS = {"directory_prefix": actions.directory_prefix,
+           "force_present": actions.force_present,
+           "force_title": actions.force_title}
 
 
 def main():
@@ -57,7 +45,8 @@ def main():
     if "-m" in cmdline:
         for action in ACTIONS:
             if config[action]:
-                ACTIONS[action](msg)
+                # ACTIONS[action](msg)
+                get_status()
 
 
 if __name__ == '__main__':
