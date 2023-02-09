@@ -31,12 +31,17 @@ def directory_prefix(msg: str):
     pass
 
 
+def force_title(msg: str):
+    unwrap(":" in msg, "Commits must have a title! Syntax: <commit title>: <commit msg>")
+
+
 def get_status():
     pass
 
 
 ACTIONS = {"directory_prefix": directory_prefix,
-           "force_present": force_present}
+           "force_present": force_present,
+           "force_title": force_title}
 
 
 def main():
