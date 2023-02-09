@@ -29,10 +29,10 @@ def directory_prefix(commit: Commit) -> str:
 
 
 def force_title(commit: Commit) -> str:
-    unwrap(":" in commit.msg, "Commits must have a title! Syntax: <commit title>: <commit msg>")
+    unwrap(":" in commit.msg, "Commits must have a title! Syntax: <commit title>:<commit msg>")
     return commit.msg
 
 
 def no_cr(commit: Commit) -> str:
-    unwrap("cr" not in commit.msg, "Please amend CR related commits!")
+    unwrap("cr" not in commit.msg.lower(), "Please amend CR related commits!")
     return commit.msg

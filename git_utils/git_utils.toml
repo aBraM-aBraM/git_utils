@@ -1,5 +1,5 @@
-force-present=true
-force-title=true
-directory-prefix=true
-no-cr=true
-auto-common-directory=true
+force-present=true # commits must be in present tense
+force-title=true # commits must fit the syntax <commit title>:<commit msg>
+directory-prefix=true # if all commits are in the same directory use it as title, add yesno if not all are in the same directory
+no-cr=true # no "cr" in commit messages
+auto-common-directory=true # always use common directory in if directory-prefix is true
