@@ -11,7 +11,7 @@ STDIN_FILENO = 1
 
 def read_config():
     with open(common.CONFIG_PATH) as config_file_obj:
-        return dict((k.replace('-', '_'), v) for k, v in toml.load(config_file_obj).items())["prepare_commit_msg"]
+        return dict((k.replace('-', '_'), v) for k, v in toml.load(config_file_obj)["prepare-commit-msg"].items())
 
 
 ACTIONS = {"force_present": actions.force_present,
@@ -29,7 +29,6 @@ def main():
     sys.stdin = os.fdopen(STDIN_FILENO)
 
     config = read_config()
-    print(config)
 
     if "-m" in cmdline:
         with open(msg_path, 'r+') as msg_file_obj:
