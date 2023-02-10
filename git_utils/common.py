@@ -21,8 +21,12 @@ def unwrap(statement: bool, error_msg: str):
 
 
 def panic(error_msg: str):
-    print(error_msg, file=sys.stderr)
+    print_error(error_msg)
     exit(1)
+
+
+def print_error(self, *args, sep=' ', end='\n'):
+    print(self, *args, sep=sep, end=end, file=sys.stderr)
 
 
 def most(it: Collection, predicate: Callable[[Any], bool]):

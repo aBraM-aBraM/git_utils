@@ -4,9 +4,11 @@
 Are you pedantic? Do you love and appreciate the order in git log?
 If so this is the repository for you!
 
-This is a collection of easily configurable git hooks.
+This is a collection of easily configurable and extendable git hooks.
 
 ## Features
+
+### Commits
 
 * force-present - no more past-tense commit messages 
 * force-title - enforce commit messages syntax -> title: message
@@ -14,6 +16,10 @@ This is a collection of easily configurable git hooks.
 if not all are in the same directory to allow the user to choose (also allow automatic yes)
 * no-cr - no more "cr" in commit messages
 
+### Pulls
+
+* copy remote files / dirs to local paths
+* easily add python logic that occurs on pull
 
 ## Setup / Install
 

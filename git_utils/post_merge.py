@@ -9,7 +9,10 @@ STDIN_FILENO = 1
 
 def read_config():
     with open(common.CONFIG_PATH) as config_file_obj:
-        return dict((k.replace('-', '_'), v) for k, v in toml.load(config_file_obj)["post-merge"].items())
+        post_merge_config = toml.load(config_file_obj).get("post-merge")
+        if post_merge_config:
+            return dict((k.replace('-', '_'), v) for k, v in post_merge_config.items())
+    return None
 
 
 def main():
@@ -20,15 +23,18 @@ def main():
 
     config = read_config()
 
-    copies = config.get("copies")
-    for copy_action in copies:
-        src, dst = copy_action
-        src, dst = common.PROJECT_DIR / src, common.PROJECT_DIR / dst
+    if config:
+        copies = config.get("copies")
+        for copy_action in copies:
+            src, dst = copy_action
+            src, dst = common.PROJECT_DIR / src, common.PROJECT_DIR / dst
 
-        if src.is_dir():
-            shutil.copytree(src, dst)
-        else:
-            shutil.copy(common.PROJECT_DIR / src, common.PROJECT_DIR / dst)
+            if src.is_dir():
+                shutil.copytree(src, dst)
+            else:
+                shutil.copy(common.PROJECT_DIR / src, common.PROJECT_DIR / dst)
+    else:
+        common.print_error(f"{os.path.basename(__file__)} executes without a configuration")
 
 
 if __name__ == '__main__':
