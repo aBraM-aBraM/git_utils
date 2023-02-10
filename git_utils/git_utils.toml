@@ -5,3 +5,6 @@ directory-prefix=true # if all commits are in the same directory use it as title
 no-cr=true # no "cr" in commit messages
 auto-common-directory=false # always use common directory in if directory-prefix is true
 top-level-title="general" # name to use with directory-prefix for the top-level dir (project name / general)
+
+[post-merge]
+copies=[["source", "destination"]] # list of directories to copy

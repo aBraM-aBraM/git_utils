@@ -2,22 +2,14 @@ import os
 import sys
 import toml
 import common
-import actions
-
-from common import Commit
+import shutil
 
 STDIN_FILENO = 1
 
 
 def read_config():
     with open(common.CONFIG_PATH) as config_file_obj:
-        return dict((k.replace('-', '_'), v) for k, v in toml.load(config_file_obj).items())
-
-
-ACTIONS = {"force_present": actions.force_present,
-           "directory_prefix": actions.directory_prefix,
-           "force_title": actions.force_title,
-           "no_cr": actions.no_cr}
+        return dict((k.replace('-', '_'), v) for k, v in toml.load(config_file_obj)["post-merge"].items())
 
 
 def main():
@@ -27,6 +19,11 @@ def main():
     sys.stdin = os.fdopen(STDIN_FILENO)
 
     config = read_config()
+
+    copies = config.get("copies")
+    for copy_action in copies:
+        src, dst = copy_action
+        shutil.copy(common.PROJECT_DIR / src, common.PROJECT_DIR / dst)
 
 
 if __name__ == '__main__':
