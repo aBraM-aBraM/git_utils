@@ -1,3 +1,4 @@
+[prepare-commit-msg]
 force-present=true # commits must be in present tense
 force-title=true # commits must fit the syntax <commit title>:<commit msg>
 directory-prefix=true # if all commits are in the same directory use it as title, add yesno if not all are in the same directory
