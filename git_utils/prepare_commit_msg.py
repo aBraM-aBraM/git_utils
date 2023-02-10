@@ -11,7 +11,10 @@ STDIN_FILENO = 1
 
 def read_config():
     with open(common.CONFIG_PATH) as config_file_obj:
-        return dict((k.replace('-', '_'), v) for k, v in toml.load(config_file_obj)["prepare-commit-msg"].items())
+        prepare_commit_msg_config = toml.load(config_file_obj)["prepare-commit-msg"]
+        if prepare_commit_msg_config:
+            return dict((k.replace('-', '_'), v) for k, v in prepare_commit_msg_config.items())
+    return None
 
 
 ACTIONS = {"force_present": actions.force_present,
@@ -30,7 +33,7 @@ def main():
 
     config = read_config()
 
-    if "-m" in cmdline:
+    if config and "-m" in cmdline:
         with open(msg_path, 'r+') as msg_file_obj:
             commit = Commit(msg, config)
             for action in ACTIONS:
