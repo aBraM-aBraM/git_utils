@@ -23,11 +23,12 @@ def directory_prefix(commit: Commit) -> Commit:
         else:
             staged_list = list(staged)
             most_common = max(set(staged_list), key=staged_list.count)
-            if commit.config["auto_common_directory"] or \
+            if commit.config.get("auto_common_directory") or \
                     yes_no(f"Would you like to use {most_common.strip()} as a prefix [Y/n]?"):
                 commit.msg = f"{next(iter(staged))}: {commit.msg}"
     else:
-        commit.msg = f'{commit.config["top_level_title"]}: {commit.msg}'
+        if commit.config.get("top_level_title"):
+            commit.msg = f'{commit.config["top_level_title"]}: {commit.msg}'
     return commit
 
 
