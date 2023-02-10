@@ -23,7 +23,12 @@ def main():
     copies = config.get("copies")
     for copy_action in copies:
         src, dst = copy_action
-        shutil.copy(common.PROJECT_DIR / src, common.PROJECT_DIR / dst)
+        src, dst = common.PROJECT_DIR / src, common.PROJECT_DIR / dst
+
+        if src.is_dir():
+            shutil.copytree(src, dst)
+        else:
+            shutil.copy(common.PROJECT_DIR / src, common.PROJECT_DIR / dst)
 
 
 if __name__ == '__main__':
